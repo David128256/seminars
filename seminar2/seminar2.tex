@@ -1,0 +1,86 @@
+\documentclass[
+paper = a4,
+fontsize = 12pt,
+headinclude = true,
+% start chapters on the right side
+open = right,
+% Use twosided layout. Every chapter starts on the right side, therefore sometimes blank pages are added between chapters.
+twoside = true,
+BCOR = 10mm,
+% add lists and bibliography to table of contents
+toc = listofnumbered,
+toc = bibnumbered,
+% enumerate chapters as x.y instead of x.y.
+numbers = noendperiod
+]{scrreprt}
+
+% use some additional package, add your own below if required
+\usepackage[utf8]{inputenc}
+% package for code listings
+\usepackage{listings}
+% package providing colors (e.g. for syntax highlighting in listings)
+\usepackage{xcolor}
+% package for german language, change to english if required
+\usepackage[english,russian]{babel}
+% package to set the line spacing
+\usepackage{setspace}
+% package for hyperlinks (e.g. in the table of contents) and set links to same style as text
+\usepackage[hidelinks]{hyperref}
+% package to create acronyms
+\usepackage[acronym]{glossaries}
+% package for pseudocode
+\usepackage[german, algochapter, linesnumbered]{algorithm2e}
+% package to create diagrams
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric, arrows}
+\tikzset{font={\fontsize{10pt}{12}\selectfont}}
+
+
+% avoid bold caption for algorithms to be consistent with other captions
+\SetAlCapSty{}
+\SetNlSty{footnotesize}{}{}
+
+% set line spacing to 1.5
+\onehalfspacing
+
+\begin{document}
+	
+	\subsection*{Задача 1}
+	
+	Дана выборка из $100$ элементов, построить t-test для гипотезы $\mu = \mu_{0}$
+	
+	$$t = \frac{\overline{x} - \mu_{0}}{s / \sqrt{n}}$$
+	имеет распределение Стьюдента с $n - 1$ степенью свободы
+	
+	Разобрать случай с выборками разного размера с разными дисперсиями (распределение Стьюдента тут --- приближение реального распределения)
+	
+	$$t = \frac{\overline{X}_{1} - \overline{X}_{2}}{\sqrt{\frac{s_{1}^{2}}{n_{1}} + \frac{s_{2}^{2}}{n_{2}}}}$$
+	
+	$$\text{degrees~of~freedom} = \frac{\left(\frac{s_{1}^{2}}{n_{1}} + \frac{s_{2}^{2}}{n_{2}}\right)^{2}}{\frac{(s_{1}^{2}/n_{1})^{2}}{n_{1} - 1} + \frac{(s_{2}^{2}/n_{2})^{2}}{n_{2} - 1}}$$
+	
+	Аналогично потестить Манном-Уитни разные распределения
+	
+	\subsection*{Задача 2}
+	
+	$$U(f) = \frac{1}{C_{n}^{m}}\sum f(X_{i1},\dots,X_{im})$$
+	
+	Расписать дисперсию изначальной оценки и U-статистики используя $$|cov(X, Y)| \leq\sqrt{D(X)D(Y)}$$
+	сказать про порядок оценки $\frac{m^{2}}{n}$
+	
+	U-статистики примеры:
+	
+	$$f(x_{1}) = x_{1}$$
+	результат --- среднее
+	
+	Пример с квадратом матожидания и подвод к дисперсии через $x_{1}^{2} - x_{1}x_{2}$
+	
+	$$f(x_{1}, x_{2}) = (x_{1} - x_{2})^{2}$$
+	результат --- выборочная дисперсия
+	
+	$$f(x_{1}, x_{2}, x_{3}) = median$$
+	результат --- эффективная оценка медианы из трех элементов
+	
+\end{document}

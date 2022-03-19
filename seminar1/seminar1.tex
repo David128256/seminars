@@ -1,0 +1,174 @@
+\documentclass[
+paper = a4,
+fontsize = 12pt,
+headinclude = true,
+% start chapters on the right side
+open = right,
+% Use twosided layout. Every chapter starts on the right side, therefore sometimes blank pages are added between chapters.
+twoside = true,
+BCOR = 10mm,
+% add lists and bibliography to table of contents
+toc = listofnumbered,
+toc = bibnumbered,
+% enumerate chapters as x.y instead of x.y.
+numbers = noendperiod
+]{scrreprt}
+
+% use some additional package, add your own below if required
+\usepackage[utf8]{inputenc}
+% package for code listings
+\usepackage{listings}
+% package providing colors (e.g. for syntax highlighting in listings)
+\usepackage{xcolor}
+% package for german language, change to english if required
+\usepackage[english,russian]{babel}
+% package to set the line spacing
+\usepackage{setspace}
+% package for hyperlinks (e.g. in the table of contents) and set links to same style as text
+\usepackage[hidelinks]{hyperref}
+% package to create acronyms
+\usepackage[acronym]{glossaries}
+% package for pseudocode
+\usepackage[german, algochapter, linesnumbered]{algorithm2e}
+% package to create diagrams
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric, arrows}
+\tikzset{font={\fontsize{10pt}{12}\selectfont}}
+
+
+% avoid bold caption for algorithms to be consistent with other captions
+\SetAlCapSty{}
+\SetNlSty{footnotesize}{}{}
+
+% set line spacing to 1.5
+\onehalfspacing
+
+\begin{document}
+	
+	\subsection*{Экспоненциальное семейство распределений}
+	$$f(x|\theta) = \frac{h(x)}{Z(\theta)}\exp\left(\pmb{\theta}^{T}\mathbf{T}(x)\right)$$
+	
+	Например, распределение Пуассона
+	$$p(x) = \frac{\lambda^{x}e^{-\lambda}}{x!}$$
+	
+	
+	
+	
+	\subsection*{Неравенство Рао-Крамера}
+	Дисперсия несмещенной оценки $\hat{\theta}$ параметра $\theta$ ограничена снизу:
+	$$\operatorname{var}(\hat{\theta}) \geq \frac{1}{I(\theta)}$$
+	где $I(\theta)$ -- информация Фишера
+	$$I(\theta) = n\mathbb{E}\left[\left(\frac{\partial l(X;\theta)}{\partial\theta}\right)^{2}\right]$$
+	
+	
+	По теореме факторизации Неймана-Фишера статистика $T(X)$ является достаточной для оценки параметра $\theta$ тогда и только тогда, когда правдоподобие выборки можно представить как
+	$$p(x|\theta) = h(x)g(\theta, T(X))$$
+	
+	На примере Пуассоновского распределения
+	$$p(x_{1}, ..., x_{n}|\lambda) = \frac{e^{-n\lambda}\lambda^{x_{1} + \dots + x_{n}}}{x_{1}!\dots x_{n}!} = \frac{e^{-n\lambda + (x_{1} + \dots + x_{n})\log	\lambda}}{x_{1}!\dots x_{n}!}$$
+	
+
+	Распишем правдоподобие распределения
+	
+	$$\log p(x_{1}, \dots, x_{n}|\theta) = -n\log Z(\theta) + \sum_{i = 1}^{n}\log h(x_{i}) + \sum_{i = 1}^{n}\theta^{T}T(x_{i})$$
+	
+	\begin{align*}
+		\frac{\partial \log p(x_{1}, \dots, x_{n}|\theta)}{\partial \theta_{i}} 
+		&= \frac{\partial}{\partial\theta_{i}}\left(-\log Z(\theta) + \theta^{T}\left(\frac{1}{n}\sum_{i = 1}^{n}T(x_{i})\right)\right) \\
+		&= -\frac{1}{Z(\theta)}\frac{\partial(Z(\theta))}{\partial\theta_{i}} + \frac{1}{n}\sum_{j = 1}^{n}T_{i}(x_{j})
+	\end{align*}
+
+	Распишем нормировочный множитель
+	
+	$$Z(\theta) = \int h(x)e^{\theta^{T}T(x)}dx$$
+	$$\frac{\partial{Z(\theta)}}{\theta_{i}} = \int T_{i}(x)h(x)e^{\theta^{T}T(x)}dx$$
+	
+	Тогда
+	
+	$$\frac{1}{Z(\theta)}\frac{\partial(Z(\theta))}{\partial \theta_{i}} =  \int \frac{1}{Z(\theta)}T_{i}(x)h(x)e^{\theta^{T}T(x)}dx = \mathbf{E}(T_{i}(x))$$
+	
+	То есть ноль производной функции правдоподобия достигается в точке
+	$$\mathbf{E}(T_{i}(x)) = \frac{1}{n}\sum_{i = 1}^{n}T_{i}(x_{i})$$
+	\\
+	
+		
+	
+	\subsection*{Задача 1}
+	
+	Дано $X \sim N(\mu, \sigma^{2})$, $Y\sim\Gamma(\alpha, \beta)$. Вычислите матрицы Фишера для вектора параметров $(\mu, \sigma)$ и $(\alpha, \beta)$
+	$$p_{Y}(x) = \frac{x^{\alpha - 1}e^{-\beta x}\beta^{\alpha}}{\Gamma(\alpha)}$$
+	
+	$$p_{X}(x) = \frac{1}{\sqrt{2\pi}\sigma}\exp\left(-\frac{(x - \mu)^{2}}{2\sigma^{2}}\right)$$
+	
+	$$\frac{\partial \log p_{X}(x)}{\partial \mu} = -\frac{\mu - x}{\sigma^{2}}$$
+	
+	$$\frac{\partial^{2} \log p_{X}(x)}{\partial \mu^{2}} = -\frac{1}{\sigma^{2}}$$
+	
+	$$\frac{\partial^{2} \log p_{X}(x)}{\partial \mu\partial\sigma} = \frac{2(\mu - x)}{\sigma^{3}}$$
+	
+	$$\frac{\partial \log p_{X}(x)}{\partial \sigma} = -\frac{1}{\sigma} + \frac{(x - \mu)^{2}}{\sigma^{3}}$$
+	
+	$$\frac{\partial^{2} \log p_{X}(x)}{\partial \sigma^{2}} = \frac{1}{\sigma^{2}} - \frac{3(x - \mu)^{2}}{\sigma^{4}}$$
+	
+	Вычислив матожидания получим матрицу
+	
+	$$I(\mu, \sigma) = 
+	\begin{bmatrix*}
+		\frac{1}{\sigma^{2}} & 0 \\
+		0 & \frac{2}{\sigma^{2}}
+	\end{bmatrix*}$$
+	
+	
+	\subsection*{Задача 2}
+	
+	Докажите, что $\cfrac{X}{n}$ является эффективной оценкой параметра $p$ распределения $Bin(n, p)$
+	
+	$$D\left(\frac{X}{n}\right) = \frac{1}{n^{2}}D(X) = \frac{p(1 - p)}{n}$$
+	
+	Вычислим информацию Фишера:
+	
+	\begin{align*}
+		I(p) 
+		&= \mathbb{E}\left(\frac{\partial\log(C_{n}^{X}p^{X}(1 - p)^{n - X})}{\partial p}\right)^{2} 
+		= \mathbb{E}\left(\frac{X}{p} - \frac{n - X}{1 - p}\right)^{2}\\
+		&=  \mathbb{E}\left(\frac{X - np}{p(1 - p)}\right)^{2}
+		= \frac{n^{2}}{p^{2}(1 - p)^{2}}\mathbb{E}\left(\frac{X}{n} - p\right) \\
+		&= \frac{n^{2}}{p^{2}(1 - p)^{2}}D\left(\frac{X}{n}\right)
+		= \frac{n}{p(1 - p)} = \frac{1}{D\left(\frac{X}{n}\right)}
+	\end{align*}
+
+	\clearpage
+	
+	\subsection*{Задача 3}
+	
+	Пусть $\mu\in\mathbb{R}, \sigma > 0$ неизвестны и $X_{1}, \dots X_{n}\sim N(\mu, \sigma^{2})$. Пусть 
+	$$T(X) = (T_{1}(X), T_{2}(X))' = (\overline{X}, S^{2})' = \left(\frac{1}{n}\sum_{i = 1}^{n}X_{i}, \frac{1}{n - 1}\sum_{i = 1}^{n}(X_{i} - \overline{X})^{2}\right)'$$
+	Покажите, что $T(X)$ является достаточной статистикой для оценки параметра $(\mu, \sigma^{2})$
+	
+	\begin{align*}
+		p(x|\mu, \sigma) 
+		&= \prod_{i = 1}^{n}\frac{1}{\sqrt{2\pi}\sigma}\exp\left(-\frac{1}{2\sigma^{2}}(x_{i} - \mu)^{2}\right) \\
+		&= \left(\frac{1}{\sqrt{2\pi}\sigma}\right)^{n}\exp\left(-\frac{1}{2\sigma^{2}}\sum_{i = 1}^{n}(x_{i} - \mu)^{2}\right) \\
+		&= (2\pi)^{-n/2}\exp\left(-\frac{1}{2\sigma^{2}}\sum_{i = 1}^{n}(x_{i} -\mu)^{2} -n\log(\sigma)\right)
+	\end{align*}
+
+	Распишем выражение под экспонентой
+	
+	\begin{align*}
+		\sum_{i = 1}^{n}(x_{i} - \mu)^{2} 
+		&= \sum_{i = 1}^{n}(x_{i} - \overline{x} + \overline{x} - \mu)^{2}\\
+		&= \sum_{i = 1}^{n}(x_{i} - \overline{x})^{2} + \sum_{i = 1}^{n}(\overline{x} - \mu)^{2} + 2(\overline{x} - \mu)\sum_{i = 1}^{n}(x_{i} - \overline{x}) \\
+		&= (n - 1)s^{2} + n(\overline{x} - \mu)^{2}
+		= (n - 1)T_{2}(x) + n(T_{1}(x) - \mu)^{2}
+	\end{align*}
+
+
+	В итоге получаем
+	
+	$$p(x|\mu, \sigma) = (2\pi)^{-n/2}\exp\left(-\frac{n}{2\sigma^{2}}(T_{1}(x) - \mu)^{2} - \frac{n - 1}{2\sigma^{2}}T_{2}(x) - n\log(\sigma)\right)$$
+	
+	
+\end{document}
